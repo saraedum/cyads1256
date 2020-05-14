@@ -10,8 +10,7 @@ cdef extern from "bcm2835.h":
     uint8_t RPI_GPIO_P1_15
     uint16_t BCM2835_SPI_CLOCK_DIVIDER_1024
     uint8_t BCM2835_SPI_MODE1
-    # LSBFIRST is unsupported says bcm.c?
-    uint8_t BCM2835_SPI_BIT_ORDER_LSBFIRST
+    uint8_t BCM2835_SPI_BIT_ORDER_MSBFIRST
     void bcm2835_gpio_set_pud(uint8_t pin, uint8_t pud)
     void bcm2835_gpio_write(uint8_t pin, uint8_t on)
     void bcm2835_gpio_fsel(uint8_t pin, uint8_t mode)
@@ -67,7 +66,7 @@ def ads_init(datarate, gain):
         raise ValueError("unsupported datarate %s. must be one of %s"%(datarate, datarates.keys()))
     datarate = datarates[datarate]
     
-    bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_LSBFIRST)
+    bcm2835_spi_setBitOrder(BCM2835_SPI_BIT_ORDER_MSBFIRST)
     bcm2835_spi_setDataMode(BCM2835_SPI_MODE1)
     bcm2835_spi_setClockDivider(BCM2835_SPI_CLOCK_DIVIDER_1024)
     bcm2835_gpio_fsel(PIN_SPICS, BCM2835_GPIO_FSEL_OUTP)
