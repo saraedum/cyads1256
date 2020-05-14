@@ -1,4 +1,4 @@
-from lowlevel import ads_init, read_and_set_next_channel
+from _bcm2835 import ads_init, read_and_set_next_channel
 
 class ADS1256:
     def __init__(self, datarate, buffered=False, gain=1):
