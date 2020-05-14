@@ -22,8 +22,8 @@ class ADS1256:
 
         if channel != self.next_channel:
             if self.next_channel != -1:
-                # TODO: log a warning if this is not the initial call
-                raise Exception
+                from warnings import warn
+                warn("The preceding call to read() has not set next_channel to the channel we are measuring now. Need to make an additional measurement to fix ADS1256's internal state.")
             self._read_and_set_next_channel(channel)
         timestamp, raw = self._read_and_set_next_channel(next_channel)
         return timestamp, raw / 1677721 / self.gain
