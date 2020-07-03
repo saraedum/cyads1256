@@ -2,6 +2,8 @@ from _bcm2835 import ads_init, read_and_set_next_channel
 
 from collections.abc import Iterable
 
+from asgiref.sync import sync_to_async
+
 class ADS1256:
     def __init__(self, datarate, buffered=False, gain=1):
         if buffered:
@@ -28,6 +30,8 @@ class ADS1256:
         timestamp, raw = self._read_and_set_next_channel(next_channel)
         return timestamp, raw / 1677721 / self.gain
 
+    read_async = sync_to_async(read)
+
     def read_many(self, channels, next_channel=None):
         ret = []
         if next_channel is None:
@@ -35,6 +39,8 @@ class ADS1256:
         for (channel, next_channel) in zip(channels, channels[1:] + [next_channel]):
             ret.append(self.read(channel, next_channel))
         return ret
+
+    read_many_async = sync_to_async(read_many)
 
     def _read_and_set_next_channel(self, next_channel):
         from time import time
